@@ -7,7 +7,7 @@
 import os
 import openai
 import gradio as gr
-os.environ['OPENAI_API_KEY']='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'
+os.environ['OPENAI_API_KEY']=''
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 start_sequence = "\nAI:"
