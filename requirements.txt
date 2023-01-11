@@ -1,0 +1,117 @@
+This repository contains the Python files required to:
+1) pscmtf.py: This Python script is used to configure a Slack bot and print Slack channel messages to a text file.
+2) chatgptclone.py: Use this Python code to create your own Chatgpt using OpenAI and Gradio.
+
+Configure a Slackbot and print Slack channel messages to text file(pscmtf.py)
+
+1) The first thing you are gonna need to do here is just make a new workspace in slackbot.To create a new workspace, you must have account on slackbot.
+2) If you're already in a workspace, for some reason, you can click on it and then click add workspace.
+3) The page will pop up,enter your email to it and then click continue.
+4) The slack will send you confirmation code in your registered mail,enter it and your workspace is created on slackbot.Complete the further steps and workspace opens.
+5) Now go to link: https://api.slack.com/ for Slack API. Click the "Your Apps" button on top right side corner of website.Now,press "Create New App button" and click "From Scratch" option to enter App Name and pick a workspace you want to work in which you already created at the intial steps.
+6) The page will appear as App Dashboard on your screen . Under the "Basic Information" ,press the "Add features and functionality" Choose and configure the tools you’ll need to create your app and select "Bots" option to go to "App Home " page where you will press the " Review Scopes to Add" button.
+7) The "OAuth and Permissions " page will appear where you will press"Add an OAuth Scope" under "Scopes" Options.Select "chat:write" to send messages as your app.
+8) Then press "Install to Workspace" button under "OAuth Tokens for Your Workspace " option to generate OAuth token and copy it in a .env file or use it as environment variable in python code.
+9) Create "bot.py" and ".env" file in your working directory of VS Code or any other software.Copy OAuth Token in .env file as: SLACK_TOKEN=Your OAuth Token
+   Go to "Basic Information" page on your app dashboard,copy "Signing Secret" under App Credentials in .env file as : SIGNING_SECRET=Your Signing Secret
+10) Install packages for code using pip(windows) or pip3(MacOs or Linux) in command prompt.
+
+   pip install slackclient
+   pip install python-dotenv
+   pip install slack
+   pip install flask
+   pip install slackeventsapi
+   
+   If error comes related to pip dependencies then use this commands before installing the python package:
+
+   pip install h5py
+   pip install typing-extensions
+   pip install wheel
+
+11) Import packages in python code:
+
+   import slack
+   import os
+   from pathlib import Path
+   from dotenv import load_dotenv
+   from flask import Flask
+   from slackeventsapi import SlackEventAdapter
+
+12)Load .env file from current directory in code:
+
+   env_path=Path('.')/'.env'
+   load_dotenv(dotenv_path=env_path)
+   client=slack.WebClient(token=os.environ['SLACK_TOKEN'])
+ 
+  You can use it directly in code by using the following code but it is better to load it from .env file as no one will have access to your OAuth Token.
+  
+  os.environ['SLACK_TOKEN']='Your OAuth Token'
+  os.environ['SIGNING_SECRET']='Your Signing Secret'
+  client=slack.WebClient(token=os.getenv('SLACK_TOKEN'))
+
+13) To connect your app with channel "#test" which you created in slack workspace.In the message field type @ and select the bot name you created, for example, bnz. You can see a "not in channel" notice beside it.Click it and press enter button when bot name appears in the message field.The bot is connected to channel "#test"
+    To post message "Hello User!" using your app in channel "#test" which you created in slack workspace:
+
+  client.chat_postMessage(channel="#test",text="Hello User!")
+
+14)To run flask application :
+
+  app=Flask(__name__)
+  
+
+15) The Slack Events Adapter is a Python-based solution to receive and parse events from Slack’s Events API.(Refer to https://github.com/slackapi/python-slack-events-api for more information)
+    Download ngrok app(use the link: https://ngrok.com/ ) which provides public address to your local web server to run requests from slack.
+
+  slack_event_adapter=SlackEventAdapter(os.environ('SIGNING_SECRET'),'/slack/events', app)
+
+  If you used "SIGNING_SECRET" directly in your code then use the following:
+  
+  slack_event_adapter=SlackEventAdapter(os.getenv('SIGNING_SECRET'),'/slack/events', app)
+
+  Run the code and you will get the output where you get link of your local web server like https://127.0.0.1:5000/ . Note the port=5000 for the next steps.
+
+  Double-click the ngrok.exe in Windows (in case of MacOs or Linux ,follow the instructions on ngrok website) and type ngrok http 5000 (in case if your port is different then replace 5000 with it) then press enter button.
+
+  Copy the link which appears in front of the "Forwarding"  like http://c040b05d37e2.ngrok.io ( it will be different for every user but it ends with.ngrok.io).The window must be running 24X7
+  
+  Enable the "Events Subscription" option under features on your app dashboard and copy the link in "Request URL " tab then add /slack/events to it which will look like http://c040b05d37e2.ngrok.io/slack/events.
+  
+  Once verified ,go to "Subcribe the Bot events" and add "message.channels" as a Bot Event which requires scope: "channel.history" ( it is automatically added your app Scopes, if not then add it manually to Scopes).
+  
+  Press "Save Changes" then go to "Reinstall to Workspace" on "OAuth and Permissions" page.
+ 
+16) To handle all the Slack channel messages and print it in a text file "bot.txt".The BOT_ID variable is used to store your app ID.
+ 
+  BOT_ID=client.api_call("auth.test")['user_id']
+  @slack_event_adapter.on('message')
+  def message(payload):
+    event=payload.get('event',{})
+    channel_id=event.get('channel')
+    user_id=event.get('user')
+    text=event.get('text')
+    f=open('bot.txt','a')
+    if BOT_ID!=user_id:
+        #client.chat_postMessage(channel=channel_id,text=text)
+        print(text,file=f)
+    f.close()
+  if __name__=="__main__":
+     app.run(debug=True,use_reloader=False)
+
+
+Use the Python code to create your own Chatgpt using OpenAI and Gradio(chatgptclone.py):
+
+
+1) Get your OpenAI API key here - https://beta.openai.com/account/api-keys
+2) Copy it in chatgptclone.py .
+3) Install the required libraries: 
+  pip install openai
+  pip install gradio
+
+4) Run chatgptclone.py .
+ 
+
+
+
+  
+   
+
