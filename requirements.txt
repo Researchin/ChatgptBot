@@ -101,6 +101,7 @@ Configure a Slackbot and print Slack channel messages to text file(pscmtf.py)
 Use the Python code to create your own Chatgpt using OpenAI and Gradio(chatgptclone.py):
 
 
+
 1) Get your OpenAI API key here - https://beta.openai.com/account/api-keys
 2) Copy it in chatgptclone.py .
 3) Install the required libraries: 
