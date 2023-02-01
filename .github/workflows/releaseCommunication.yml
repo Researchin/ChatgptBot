@@ -2,7 +2,7 @@ name: Release notifications
 
 on: 
  release: 
-   types: -created
+   types: [published]
 
 jobs:
   my-job:
