@@ -1,4 +1,4 @@
-name: Release notifications using webhooks
+name: Release notifications using webhooks_1
 'on':
   release:
     types:
