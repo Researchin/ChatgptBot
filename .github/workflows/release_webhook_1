@@ -1,0 +1,32 @@
+name: Release notifications using webhooks
+
+on: 
+ release: 
+   types: [published]
+
+jobs:
+  send-message:
+    name: send message using webhook
+    runs-on: ubuntu-latest
+    steps:
+     - name: Send custom JSON data to Slack workflow
+         id: slack
+       uses: slackapi/slack-github-action@v1.23.0
+       with:
+    # For posting a rich message using Block Kit
+    payload: |
+      {
+        "text": "${{github.ref_name}} is released on this link",
+        "blocks": [
+          {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": "${{github.ref_name}} is released on this link"
+            }
+          }
+        ]
+      }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST3_WEBHOOKIDENTIFIER,secrets.SLACK_TEST4_WEBHOOKIDENTIFIER }}
+        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
