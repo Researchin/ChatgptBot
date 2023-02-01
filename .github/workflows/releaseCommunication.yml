@@ -1,6 +1,8 @@
-name: Greeting from Mona
+name: Release notifications
 
-on: push
+on: 
+ release: 
+   types: -created
 
 jobs:
   my-job:
@@ -12,7 +14,7 @@ jobs:
        uses: slackapi/slack-github-action@v1.23.0
        with:
         channel-id: 'test1,test2'
-        slack-message: " Releases v.1.0.0 i released at this link"
+        slack-message: " ${{github.ref_name}} is released on this link"
                          
        env:
              SLACK_BOT_TOKEN: '${{ secrets.SLACK_BOT_TOKEN }}'
