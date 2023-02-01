@@ -1,13 +1,19 @@
-name: releases announcement
-on: 
-release:
-types: [created]
-jobs:  send_message:
-name: Send Release Announcement
-runs-on: ubuntu-latest
-steps:
-- name: Send Message
-id: send_message
-run: |
-MESSAGE=":newspaper:Thanks to everyone\'s hard work, ${{github.ref_name}} is now released to all users:exclamation:"
-curl -X POST -H 'Content-type:application/json' --data "{'text':'$MESSAGE'}" "https://hooks.slack.com/services/{${{secrets.RELEASE_TEST1_WEBHOOKIDENTIFIER}},${{secrets.RELEASE_TEST2_WEBHOOKIDENTIFIER}}}"
+name: Greeting from Mona
+
+on: push
+
+jobs:
+  my-job:
+    name: My Job
+    runs-on: ubuntu-latest
+    steps:
+     - name: Post to a Slack channel
+         id:slack
+       uses: slackapi/slack-github-action@v1.23.0
+       with:
+        channel-id: 'CHANNEL_ID,ANOTHER_CHANNEL_ID'
+        slack-message: |-
+                         GitHub build result: ${{ job.status }}${{ github.event.pull_request.html_url || github.event.head_commit.url }}
+        env:
+             SLACK_BOT_TOKEN: '${{ secrets.SLACK_BOT_TOKEN }}'
+
