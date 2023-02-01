@@ -13,19 +13,19 @@ jobs:
        id: slack
        uses: slackapi/slack-github-action@v1.23.0
        with:
-        payload: |
-         {
-          "text": "${{github.ref_name}} is released on this link",
-          "blocks": [
-          {
-            "type": "section",
-            "text": {
-              "type": "mrkdwn",
-              "text": "${{github.ref_name}} is released on this link"
+         payload: |
+          { 
+           "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+           "blocks": [
+            {
+               "type": "section",
+               "text": {
+               "type": "mrkdwn",
+               "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+             }
             }
-          }
-        ]
-      }
-      env:
+           ]
+          }    
+       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_TEST3_WEBHOOKIDENTIFIER,secrets.SLACK_TEST4_WEBHOOKIDENTIFIER }}
         SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
