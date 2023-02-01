@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
      - name: Send custom JSON data to Slack workflow
-         id: slack
+       id: slack
        uses: slackapi/slack-github-action@v1.23.0
        with:
     # For posting a rich message using Block Kit
-    payload: |
-      {
+        payload: |
+         {
         "text": "${{github.ref_name}} is released on this link",
         "blocks": [
           {
