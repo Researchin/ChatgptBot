@@ -1,4 +1,4 @@
-name:releases announcement
+name: releases announcement
 on: 
 release:
 types: [created]
