@@ -13,11 +13,10 @@ jobs:
        id: slack
        uses: slackapi/slack-github-action@v1.23.0
        with:
-    # For posting a rich message using Block Kit
         payload: |
          {
-        "text": "${{github.ref_name}} is released on this link",
-        "blocks": [
+          "text": "${{github.ref_name}} is released on this link",
+          "blocks": [
           {
             "type": "section",
             "text": {
